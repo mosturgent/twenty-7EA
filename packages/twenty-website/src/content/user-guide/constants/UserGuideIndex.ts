@@ -19,6 +19,7 @@ export const USER_GUIDE_INDEX = {
       { fileName: 'emails' },
       { fileName: 'notes' },
       { fileName: 'tasks' },
+      { fileName: 'google-calendar-sync' },
       { fileName: 'integrations' },
       { fileName: 'api-webhooks' },
     ],
