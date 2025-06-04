@@ -1,0 +1,41 @@
+---
+title: Google Calendar Sync
+info: Connect Google Calendar so events from your booking calendar appear automatically in Twenty.
+icon: IconCalendar
+image: /images/user-guide/integrations/plug.png
+sectionInfo: Learn how to connect Twenty to your other tools.
+---
+
+## Calendar Synchronization
+
+Booking events in Google Calendar can be synced with Twenty so your team always sees an up-to-date schedule.
+
+### Enable the Google Calendar API
+
+Follow the <ArticleLink href="/developers/section/self-hosting/setup#gmail-google-calendar-integration">self-hosting guide</ArticleLink> to create a Google Cloud project, enable the Calendar API and configure OAuth credentials.
+
+### Configure in Twenty
+
+Set the Google integration variables under `Settings → Admin Panel → Configuration Variables`:
+
+- `MESSAGING_PROVIDER_GMAIL_ENABLED=true`
+- `CALENDAR_PROVIDER_GOOGLE_ENABLED=true`
+- `AUTH_GOOGLE_CLIENT_ID=<client-id>`
+- `AUTH_GOOGLE_CLIENT_SECRET=<client-secret>`
+- `AUTH_GOOGLE_CALLBACK_URL=https://<your-domain>/auth/google/redirect`
+- `AUTH_GOOGLE_APIS_CALLBACK_URL=https://<your-domain>/auth/google-apis/get-access-token`
+
+### Start the sync jobs
+
+Ensure the calendar background jobs run in your worker container:
+
+```bash
+yarn command:prod cron:calendar:calendar-event-list-fetch
+yarn command:prod cron:calendar:calendar-events-import
+```
+
+### Connect your account
+
+Go to `Settings` → `Accounts` and click **Add account** to link your Google Calendar. New events will automatically appear on linked records in Twenty.
+
+<ArticleEditContent></ArticleEditContent>
