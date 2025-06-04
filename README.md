@@ -17,6 +17,12 @@
 <p align="center">
   <a href="https://www.twenty.com">
     <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/twentyhq/twenty/v0.12.0/packages/twenty-docs/static/img/preview-dark.png" />
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/twentyhq/twenty/v0.12.0/packages/twenty-docs/static/img/preview-light.png" />
+      <img src="./packages/twenty-docs/static/img/preview-light.png" alt="Companies view" />
+    </picture>
+  </a>
+</p>
 
 <br />
 
