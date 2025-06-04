@@ -6,6 +6,8 @@
   </a>
 </p>
 
+
+
 <h2 align="center" >The #1 Open-Source CRM </h2>
 
 <p align="center"><a href="https://twenty.com">🌐 Website</a> · <a href="https://twenty.com/developers">📚 Documentation</a> · <a href="https://github.com/orgs/twentyhq/projects/1"><img src="./packages/twenty-website/public/images/readme/planner-icon.svg" width="12" height="12"/> Roadmap </a> · <a href="https://discord.gg/cx5n4Jzs57"><img src="./packages/twenty-website/public/images/readme/discord-icon.svg" width="12" height="12"/> Discord</a> · <a href="https://www.figma.com/file/xt8O9mFeLl46C5InWwoMrN/Twenty"><img src="./packages/twenty-website/public/images/readme/figma-icon.png"  width="12" height="12"/>  Figma</a></p>
@@ -15,12 +17,6 @@
 <p align="center">
   <a href="https://www.twenty.com">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/twentyhq/twenty/v0.12.0/packages/twenty-docs/static/img/preview-dark.png" />
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/twentyhq/twenty/v0.12.0/packages/twenty-docs/static/img/preview-light.png" />
-      <img src="./packages/twenty-docs/static/img/preview-light.png" alt="Companies view" />
-    </picture>
-  </a>
-</p>
 
 <br />
 
@@ -55,6 +51,15 @@ Below are a few features we have implemented to date:
 + [Create tasks on records](#create-tasks-on-records)
 + [Navigate quickly through the app using keyboard shortcuts and search](#navigate-quickly-through-the-app-using-keyboard-shortcuts-and-search)
 + [Generate leads from past customers via LLM](#generate-leads-from-past-customers-via-llm)
++ [Unified Pipeline Reporting](#unified-pipeline-reporting)
++ [Revenue Forecasting](#revenue-forecasting)
++ [Lead Scoring Automation](#lead-scoring-automation)
++ [Account Health Monitoring](#account-health-monitoring)
++ [Lifecycle Stage Tracking](#lifecycle-stage-tracking)
++ [Automated Revenue Attribution](#automated-revenue-attribution)
++ [Quota & Compensation Management](#quota--compensation-management)
++ [Playbooks & Process Management](#playbooks--process-management)
++ [Integration with Finance Tools](#integration-with-finance-tools)
 
 
 ## Add, filter, sort, edit, and track customers:
@@ -140,6 +145,33 @@ Twenty now analyzes customer notes with GPT-4o to surface repeat customers and u
       <img src="./packages/twenty-docs/static/img/api-light.png" alt="API" />
     </picture>
 </p>
+
+## Unified Pipeline Reporting
+Get a comprehensive view of marketing, sales, and customer success metrics in one dashboard. Track trends such as lead-to-opportunity conversion, win/loss ratios, and lifetime value without jumping between modules.
+
+## Revenue Forecasting
+Use historical deal data and probability weighting to predict revenue by month or quarter directly inside the CRM.
+
+## Lead Scoring Automation
+Automatically qualify leads using customizable scoring models based on engagement and firmographics, then assign them to the right rep.
+
+## Account Health Monitoring
+Monitor usage, support ticket volume, and renewal dates so you can trigger alerts when key accounts are at risk of churn.
+
+## Lifecycle Stage Tracking
+Standardize lifecycle stages across teams to see where every account is in the customer journey.
+
+## Automated Revenue Attribution
+Connect marketing campaigns to closed deals to calculate ROI and support multi-touch attribution.
+
+## Quota & Compensation Management
+Track quotas and forecast attainment while calculating commissions from deal data.
+
+## Playbooks & Process Management
+Offer in-app checklists for prospecting, onboarding, or renewals and measure adherence to your process.
+
+## Integration with Finance Tools
+Sync closed deal information to invoicing and ERP systems to reconcile bookings with invoiced revenue.
 
 
 <br />
