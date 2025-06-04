@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://www.twenty.com">
-    <img src="./packages/twenty-website/public/images/core/logo.svg" width="100px" alt="Twenty logo" />
+    <img src="./packages/twenty-website/public/images/core/logo.svg" width="100px" alt="20x20 by 7th element Africa logo" />
   </a>
 </p>
 
@@ -32,18 +32,18 @@ See:
 
 # Does the world need another CRM?
 
-We built Twenty for three reasons:
+We built 20x20 by 7th element Africa for three reasons:
 
 **CRMs are too expensive, and users are trapped.** Companies use locked-in customer data to hike prices. It shouldn't be that way.
 
 **A fresh start is required to build a better experience.** We can learn from past mistakes and craft a cohesive experience inspired by new UX patterns from tools like Notion, Airtable or Linear.
 
-**We believe in Open-source and community.** Hundreds of developers are already building Twenty together. Once we have plugin capabilities, a whole ecosystem will grow around it.
+**We believe in Open-source and community.** Hundreds of developers are already building 20x20 by 7th element Africa together. Once we have plugin capabilities, a whole ecosystem will grow around it.
 
 <br />
 
-# What You Can Do With Twenty
-We're currently developing Twenty's beta version.  
+# What You Can Do With 20x20 by 7th element Africa
+We're currently developing 20x20 by 7th element Africa's beta version.
 
 Please feel free to flag any specific needs you have by creating an issue.   
 
