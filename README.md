@@ -54,6 +54,7 @@ Below are a few features we have implemented to date:
 + [See rich notes tasks displayed in a timeline](#see-rich-notes-tasks-displayed-in-a-timeline)
 + [Create tasks on records](#create-tasks-on-records)
 + [Navigate quickly through the app using keyboard shortcuts and search](#navigate-quickly-through-the-app-using-keyboard-shortcuts-and-search)
++ [Generate leads from past customers via LLM](#generate-leads-from-past-customers-via-llm)
 
 
 ## Add, filter, sort, edit, and track customers:
@@ -125,6 +126,10 @@ Below are a few features we have implemented to date:
       <img src="./packages/twenty-docs/static/img/keyboard-dark.png" alt="Keyboard shortcuts" />
     </picture>
 </p>
+## Generate leads from past customers via LLM:
+
+Twenty now analyzes customer notes with GPT-4o to surface repeat customers and upsell opportunities.
+
 
 ## Connect your CRM to all your tools through our APIs and Webhooks.
 

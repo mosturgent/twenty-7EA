@@ -7,6 +7,7 @@ import { FavoriteModule } from 'src/modules/favorite/favorite.module';
 import { MessagingModule } from 'src/modules/messaging/messaging.module';
 import { ViewModule } from 'src/modules/view/view.module';
 import { WorkflowModule } from 'src/modules/workflow/workflow.module';
+import { LeadGenerationModule } from 'src/modules/lead-generation/lead-generation.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { WorkflowModule } from 'src/modules/workflow/workflow.module';
     WorkflowModule,
     FavoriteFolderModule,
     FavoriteModule,
+    LeadGenerationModule,
   ],
   providers: [],
   exports: [],
