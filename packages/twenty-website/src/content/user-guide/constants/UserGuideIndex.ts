@@ -12,6 +12,7 @@ export const USER_GUIDE_INDEX = {
       { fileName: 'views-sort-filter' },
       { fileName: 'table-views' },
       { fileName: 'kanban-views' },
+      { fileName: 'booking-kanban-pipeline' },
       { fileName: 'import-export-data' },
     ],
     Functions: [
