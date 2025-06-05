@@ -58,8 +58,7 @@ export default config({
             },
           },
         }),
-        // TODO: Define the date with a normalized format
-        Date: fields.text({ label: 'Date' }),
+        Date: fields.date({ label: 'Date' }),
         content: fields.mdx({
           label: 'Content',
           options: {
