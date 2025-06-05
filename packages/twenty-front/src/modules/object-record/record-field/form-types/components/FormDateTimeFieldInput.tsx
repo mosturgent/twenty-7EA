@@ -18,7 +18,14 @@ import { useListenClickOutside } from '@/ui/utilities/pointer-event/hooks/useLis
 import { isStandaloneVariableString } from '@/workflow/utils/isStandaloneVariableString';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ChangeEvent, KeyboardEvent, useId, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import { isDefined } from 'twenty-shared/utils';
 import { TEXT_INPUT_STYLE } from 'twenty-ui/theme';
 import { Nullable } from 'twenty-ui/utilities';
@@ -154,6 +161,25 @@ export const FormDateTimeFieldInput = ({
     enabled: displayDatePicker,
   });
 
+  useEffect(() => {
+    if (!displayDatePicker) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        handlePickerEscape();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [displayDatePicker, handlePickerEscape]);
+
   const handlePickerChange = (newDate: Nullable<Date>) => {
     setDraftValue({
       type: 'static',
@@ -229,6 +255,12 @@ export const FormDateTimeFieldInput = ({
   };
 
   const handleInputKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      handlePickerEscape();
+      return;
+    }
+
     if (event.key !== 'Enter') {
       return;
     }

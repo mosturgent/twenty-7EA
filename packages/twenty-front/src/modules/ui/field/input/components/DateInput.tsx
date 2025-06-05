@@ -75,11 +75,12 @@ export const DateInput = ({
     onEnter(internalValue);
   };
 
-  const handleEscape = () => {
+  const handleEscape = (originalValue: Nullable<Date>) => {
     closeDropdownYearSelect();
     closeDropdownMonthSelect();
 
-    onEscape(internalValue);
+    setInternalValue(originalValue);
+    onEscape(originalValue);
   };
 
   const handleClickOutside = useRecoilCallback(
@@ -107,7 +108,7 @@ export const DateInput = ({
 
   useRegisterInputEvents({
     inputRef: wrapperRef,
-    inputValue: internalValue,
+    inputValue: value,
     onEnter: handleEnter,
     onEscape: handleEscape,
     onClickOutside: handleClickOutside,
