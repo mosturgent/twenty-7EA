@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import { RecoilRoot, useSetRecoilState } from 'recoil';
+import { RecoilRoot } from 'recoil';
 
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
@@ -28,23 +28,20 @@ const workspaceMember: Omit<
 };
 
 describe('useColorScheme', () => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <RecoilRoot
+      initializeState={({ set }) => {
+        set(currentWorkspaceMemberState, workspaceMember);
+      }}
+    >
+      {children}
+    </RecoilRoot>
+  );
+
   it('should update color scheme', async () => {
-    const { result } = renderHook(
-      () => {
-        const colorScheme = useColorScheme();
-
-        const setCurrentWorkspaceMember = useSetRecoilState(
-          currentWorkspaceMemberState,
-        );
-
-        setCurrentWorkspaceMember(workspaceMember);
-
-        return colorScheme;
-      },
-      {
-        wrapper: RecoilRoot,
-      },
-    );
+    const { result } = renderHook(() => useColorScheme(), {
+      wrapper: Wrapper,
+    });
 
     expect(result.current.colorScheme).toBe('System');
 
@@ -52,7 +49,6 @@ describe('useColorScheme', () => {
       await result.current.setColorScheme('Dark');
     });
 
-    // FIXME: For some reason, the color gets unset
-    // expect(result.current.colorScheme).toEqual('Dark');
+    expect(result.current.colorScheme).toEqual('Dark');
   });
 });
