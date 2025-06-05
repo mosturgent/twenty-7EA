@@ -60,6 +60,15 @@ export const WorkflowRunDiagramCanvasEffect = () => {
           return;
         }
 
+        const currentSelectedNode = getSnapshotValue(
+          snapshot,
+          workflowSelectedNodeState,
+        );
+
+        if (currentSelectedNode === selectedNode.id) {
+          return;
+        }
+
         set(workflowSelectedNodeState, selectedNode.id);
 
         const selectedNodeData = selectedNode.data;
