@@ -13,6 +13,7 @@ import { WorkspaceIsNotAuditLogged } from 'src/engine/twenty-orm/decorators/work
 import { WorkspaceIsNullable } from 'src/engine/twenty-orm/decorators/workspace-is-nullable.decorator';
 import { WorkspaceIsSystem } from 'src/engine/twenty-orm/decorators/workspace-is-system.decorator';
 import { WorkspaceRelation } from 'src/engine/twenty-orm/decorators/workspace-relation.decorator';
+import { WorkspaceIsUnique } from 'src/engine/twenty-orm/decorators/workspace-is-unique.decorator';
 import { CALENDAR_EVENT_STANDARD_FIELD_IDS } from 'src/engine/workspace-manager/workspace-sync-metadata/constants/standard-field-ids';
 import { STANDARD_OBJECT_ICONS } from 'src/engine/workspace-manager/workspace-sync-metadata/constants/standard-object-icons';
 import { STANDARD_OBJECT_IDS } from 'src/engine/workspace-manager/workspace-sync-metadata/constants/standard-object-ids';
@@ -125,6 +126,7 @@ export class CalendarEventWorkspaceEntity extends BaseWorkspaceEntity {
     description: msg`iCal UID`,
     icon: 'IconKey',
   })
+  @WorkspaceIsUnique()
   iCalUID: string;
 
   @WorkspaceField({
