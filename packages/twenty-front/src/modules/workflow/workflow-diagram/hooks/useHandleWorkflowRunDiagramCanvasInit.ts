@@ -5,7 +5,6 @@ import { useRecoilComponentCallbackStateV2 } from '@/ui/utilities/state/componen
 import { useWorkflowRunIdOrThrow } from '@/workflow/hooks/useWorkflowRunIdOrThrow';
 import { workflowVisualizerWorkflowIdComponentState } from '@/workflow/states/workflowVisualizerWorkflowIdComponentState';
 import { workflowDiagramStatusComponentState } from '@/workflow/workflow-diagram/states/workflowDiagramStatusComponentState';
-import { workflowRunDiagramAutomaticallyOpenedStepsComponentState } from '@/workflow/workflow-diagram/states/workflowRunDiagramAutomaticallyOpenedStepsComponentState';
 import { workflowRunStepToOpenByDefaultComponentState } from '@/workflow/workflow-diagram/states/workflowRunStepToOpenByDefaultComponentState';
 import { workflowSelectedNodeComponentState } from '@/workflow/workflow-diagram/states/workflowSelectedNodeComponentState';
 import { getWorkflowNodeIconKey } from '@/workflow/workflow-diagram/utils/getWorkflowNodeIconKey';
@@ -34,10 +33,6 @@ export const useHandleWorkflowRunDiagramCanvasInit = () => {
   const workflowSelectedNodeState = useRecoilComponentCallbackStateV2(
     workflowSelectedNodeComponentState,
   );
-  const workflowRunDiagramAutomaticallyOpenedStepsState =
-    useRecoilComponentCallbackStateV2(
-      workflowRunDiagramAutomaticallyOpenedStepsComponentState,
-    );
 
   const handleWorkflowRunDiagramCanvasInit = useRecoilCallback(
     ({ snapshot, set }) =>
@@ -77,30 +72,16 @@ export const useHandleWorkflowRunDiagramCanvasInit = () => {
 
           set(workflowSelectedNodeState, workflowStepToOpenByDefault.id);
 
-          const workflowRunDiagramAutomaticallyOpenedSteps = getSnapshotValue(
-            snapshot,
-            workflowRunDiagramAutomaticallyOpenedStepsState,
-          );
-          const hasStepAlreadyBeenOpenedAutomatically =
-            workflowRunDiagramAutomaticallyOpenedSteps.includes(
-              workflowStepToOpenByDefault.id,
-            );
-
-          // FIXME: This is a workaround to avoid opening a workflow run step twice when going from the side panel to the fullscreen show page.
-          // The step is opened in the `handleSelectionChange` function of `WorkflowRunDiagramCanvasEffect`. I think it shouldn't be opened there but
-          // we should keep opening the step here, in `handleWorkflowRunDiagramCanvasInit`.
-          if (!hasStepAlreadyBeenOpenedAutomatically) {
-            openWorkflowRunViewStepInCommandMenu({
-              workflowId: workflowVisualizerWorkflowId,
-              workflowRunId,
-              title: workflowStepToOpenByDefault.data.name,
-              icon: getIcon(
-                getWorkflowNodeIconKey(workflowStepToOpenByDefault.data),
-              ),
-              workflowSelectedNode: workflowStepToOpenByDefault.id,
-              stepExecutionStatus: workflowStepToOpenByDefault.data.runStatus,
-            });
-          }
+          openWorkflowRunViewStepInCommandMenu({
+            workflowId: workflowVisualizerWorkflowId,
+            workflowRunId,
+            title: workflowStepToOpenByDefault.data.name,
+            icon: getIcon(
+              getWorkflowNodeIconKey(workflowStepToOpenByDefault.data),
+            ),
+            workflowSelectedNode: workflowStepToOpenByDefault.id,
+            stepExecutionStatus: workflowStepToOpenByDefault.data.runStatus,
+          });
 
           set(workflowRunStepToOpenByDefaultState, undefined);
         }
@@ -111,7 +92,6 @@ export const useHandleWorkflowRunDiagramCanvasInit = () => {
       workflowRunStepToOpenByDefaultState,
       workflowVisualizerWorkflowIdState,
       workflowSelectedNodeState,
-      workflowRunDiagramAutomaticallyOpenedStepsState,
       openWorkflowRunViewStepInCommandMenu,
       workflowRunId,
       getIcon,
