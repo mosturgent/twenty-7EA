@@ -16,9 +16,11 @@ export const addCreateStepNodes = ({ nodes, edges }: WorkflowDiagram) => {
 
   for (const node of nodesWithoutTargets) {
     const newCreateStepNode: WorkflowDiagramNode = {
-      // FIXME: We need a stable id for create step nodes to be able to preserve their selected status.
-      // FIXME: In the future, we'll have conditions and loops. We'll have to set an id to each branch so we can have this stable id.
-      id: 'branch-1__create-step',
+      // We only support a single branch for now, but include it in the id so
+      // that it remains stable when multiple branches are introduced.
+      // Using the parent node id ensures the identifier does not change across
+      // renders, which allows the selection state of the node to persist.
+      id: `branch-1__${node.id}__create-step`,
       type: 'create-step',
       data: {
         nodeType: 'create-step',
