@@ -58,7 +58,7 @@ export class CalendarSaveEventsService {
       iCalUIDCalendarEventIdMap,
     );
 
-    // TODO: When we will be able to add unicity contraint on iCalUID, we will do a INSERT ON CONFLICT DO UPDATE
+    // Insert or update events based on iCalUID uniqueness constraint
 
     const existingEventsICalUIDs = existingCalendarEvents.map(
       (calendarEvent) => calendarEvent.iCalUID,
@@ -116,8 +116,8 @@ export class CalendarSaveEventsService {
 
     await workspaceDataSource?.transaction(
       async (transactionManager: WorkspaceEntityManager) => {
-        await calendarEventRepository.save(
-          eventsToSave.map(
+        await calendarEventRepository.upsert(
+          [...eventsToSave, ...eventsToUpdate].map(
             (calendarEvent) =>
               ({
                 id: calendarEvent.id,
@@ -138,33 +138,7 @@ export class CalendarSaveEventsService {
                 externalUpdatedAt: calendarEvent.externalUpdatedAt,
               }) satisfies DeepPartial<CalendarEventWorkspaceEntity>,
           ),
-          {},
-          transactionManager,
-        );
-
-        await calendarEventRepository.save(
-          eventsToUpdate.map(
-            (calendarEvent) =>
-              ({
-                id: calendarEvent.id,
-                iCalUID: calendarEvent.iCalUID,
-                title: calendarEvent.title,
-                description: calendarEvent.description,
-                startsAt: calendarEvent.startsAt,
-                endsAt: calendarEvent.endsAt,
-                location: calendarEvent.location,
-                isFullDay: calendarEvent.isFullDay,
-                isCanceled: calendarEvent.isCanceled,
-                conferenceSolution: calendarEvent.conferenceSolution,
-                conferenceLink: {
-                  primaryLinkLabel: calendarEvent.conferenceLinkLabel,
-                  primaryLinkUrl: calendarEvent.conferenceLinkUrl,
-                },
-                externalCreatedAt: calendarEvent.externalCreatedAt,
-                externalUpdatedAt: calendarEvent.externalUpdatedAt,
-              }) satisfies DeepPartial<CalendarEventWorkspaceEntity>,
-          ),
-          {},
+          ['iCalUID'],
           transactionManager,
         );
 
