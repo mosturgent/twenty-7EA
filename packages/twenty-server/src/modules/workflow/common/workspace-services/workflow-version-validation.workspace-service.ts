@@ -50,9 +50,8 @@ export class WorkflowVersionValidationWorkspaceService {
         where: {
           workflowId: payload.data.workflowId,
           status: WorkflowVersionStatus.DRAFT,
-          // FIXME: soft-deleted rows selection will have to be improved globally
-          deletedAt: IsNull(),
         },
+        withDeleted: true,
       });
 
     if (workflowAlreadyHasDraftVersion) {
