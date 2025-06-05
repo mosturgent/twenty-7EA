@@ -199,7 +199,7 @@ export class WorkflowVisualizerPage {
       .getByTestId(/^rf__node-.+$/)
       .and(this.#page.getByTestId(/^((?!rf__node-trigger).)*$/))
       .and(
-        this.#page.getByTestId(/^((?!rf__node-branch-\d+__create-step).)*$/),
+        this.#page.getByTestId(/^((?!rf__node-branch-\d+__.*__create-step).)*$/),
       );
   }
 
