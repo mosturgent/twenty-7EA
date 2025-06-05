@@ -7,6 +7,25 @@ import { TwentyORMManager } from 'src/engine/twenty-orm/twenty-orm.manager';
 import { MessageChannelVisibility } from 'src/modules/messaging/common/standard-objects/message-channel.workspace-entity';
 import { MessageParticipantWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message-participant.workspace-entity';
 import { MessageThreadWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message-thread.workspace-entity';
+import type { PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
+import type { WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
+
+interface PersonWithCompositeFields extends PersonWorkspaceEntity {
+  nameFirstName?: string | null;
+  nameLastName?: string | null;
+}
+
+interface WorkspaceMemberWithCompositeFields
+  extends WorkspaceMemberWorkspaceEntity {
+  nameFirstName?: string | null;
+  nameLastName?: string | null;
+}
+
+interface MessageParticipantWithRelations
+  extends MessageParticipantWorkspaceEntity {
+  person: PersonWithCompositeFields | null;
+  workspaceMember: WorkspaceMemberWithCompositeFields | null;
+}
 
 @Injectable()
 export class TimelineMessagingService {
@@ -87,14 +106,12 @@ export class TimelineMessagingService {
 
   public async getThreadParticipantsByThreadId(
     messageThreadIds: string[],
-  ): Promise<{
-    [key: string]: MessageParticipantWorkspaceEntity[];
-  }> {
+  ): Promise<Record<string, MessageParticipantWithRelations[]>> {
     const messageParticipantRepository =
       await this.twentyORMManager.getRepository<MessageParticipantWorkspaceEntity>(
         'messageParticipant',
       );
-    const threadParticipants = await messageParticipantRepository
+    const threadParticipants = (await messageParticipantRepository
       .createQueryBuilder()
       .select('messageParticipant')
       .addSelect('message.messageThreadId')
@@ -111,7 +128,7 @@ export class TimelineMessagingService {
       .andWhere('messageParticipant.role = :role', { role: 'from' })
       .orderBy('message.messageThreadId')
       .distinctOn(['message.messageThreadId', 'messageParticipant.handle'])
-      .getMany();
+      .getMany()) as MessageParticipantWithRelations[];
 
     // This is because subqueries are not handled by twentyORM
     const orderedThreadParticipants = threadParticipants.sort(
@@ -124,44 +141,39 @@ export class TimelineMessagingService {
     const threadParticipantsWithCompositeFields = orderedThreadParticipants.map(
       (threadParticipant) => ({
         ...threadParticipant,
-        person: {
-          id: threadParticipant.person?.id,
-          name: {
-            //eslint-disable-next-line
-            //@ts-ignore
-            firstName: threadParticipant.person?.nameFirstName,
-            //eslint-disable-next-line
-            //@ts-ignore
-            lastName: threadParticipant.person?.nameLastName,
-          },
-          avatarUrl: threadParticipant.person?.avatarUrl,
-        },
-        workspaceMember: {
-          id: threadParticipant.workspaceMember?.id,
-          name: {
-            //eslint-disable-next-line
-            //@ts-ignore
-            firstName: threadParticipant.workspaceMember?.nameFirstName,
-            //eslint-disable-next-line
-            //@ts-ignore
-            lastName: threadParticipant.workspaceMember?.nameLastName,
-          },
-          avatarUrl: threadParticipant.workspaceMember?.avatarUrl,
-        },
+        person: threadParticipant.person
+          ? {
+              ...threadParticipant.person,
+              name: {
+                firstName: threadParticipant.person.nameFirstName ?? '',
+                lastName: threadParticipant.person.nameLastName ?? '',
+              },
+            }
+          : null,
+        workspaceMember: threadParticipant.workspaceMember
+          ? {
+              ...threadParticipant.workspaceMember,
+              name: {
+                firstName:
+                  threadParticipant.workspaceMember.nameFirstName ?? '',
+                lastName:
+                  threadParticipant.workspaceMember.nameLastName ?? '',
+              },
+            }
+          : null,
       }),
     );
 
-    return threadParticipantsWithCompositeFields.reduce(
+    return threadParticipantsWithCompositeFields.reduce<Record<string, MessageParticipantWithRelations[]>>(
       (threadParticipantsAcc, threadParticipant) => {
-        if (!threadParticipant.message.messageThreadId)
+        if (!threadParticipant.message.messageThreadId) {
           return threadParticipantsAcc;
+        }
 
-        // @ts-expect-error legacy noImplicitAny
-        if (!threadParticipantsAcc[threadParticipant.message.messageThreadId])
-          // @ts-expect-error legacy noImplicitAny
+        if (!threadParticipantsAcc[threadParticipant.message.messageThreadId]) {
           threadParticipantsAcc[threadParticipant.message.messageThreadId] = [];
+        }
 
-        // @ts-expect-error legacy noImplicitAny
         threadParticipantsAcc[threadParticipant.message.messageThreadId].push(
           threadParticipant,
         );
@@ -247,20 +259,22 @@ export class TimelineMessagingService {
       {},
     );
 
-    const threadVisibilityByThreadId: {
-      [key: string]: MessageChannelVisibility;
-    } = messageThreadIds.reduce((threadVisibilityAcc, messageThreadId) => {
-      // If the workspace member is not the owner of the thread, use the visibility value from the query
-      // @ts-expect-error legacy noImplicitAny
-      threadVisibilityAcc[messageThreadId] =
-        threadIdsWithoutWorkspaceMember.includes(messageThreadId)
-          ? (threadVisibilityByThreadIdForWhichWorkspaceMemberIsNotOwner?.[
-              messageThreadId
-            ] ?? MessageChannelVisibility.METADATA)
-          : MessageChannelVisibility.SHARE_EVERYTHING;
+    const threadVisibilityByThreadId: Record<string, MessageChannelVisibility> =
+      messageThreadIds.reduce<Record<string, MessageChannelVisibility>>(
+        (threadVisibilityAcc, messageThreadId) => {
+          // If the workspace member is not the owner of the thread, use the visibility value from the query
+          threadVisibilityAcc[messageThreadId] =
+            threadIdsWithoutWorkspaceMember.includes(messageThreadId)
+              ?
+                  threadVisibilityByThreadIdForWhichWorkspaceMemberIsNotOwner?.[
+                    messageThreadId
+                  ] ?? MessageChannelVisibility.METADATA
+              : MessageChannelVisibility.SHARE_EVERYTHING;
 
-      return threadVisibilityAcc;
-    }, {});
+          return threadVisibilityAcc;
+        },
+        {},
+      );
 
     return threadVisibilityByThreadId;
   }
